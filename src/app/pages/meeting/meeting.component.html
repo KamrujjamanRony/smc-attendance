@@ -1,0 +1,103 @@
+<app-cover title="Meeting list" sub1="Dashboard" sub2="Meeting"></app-cover>
+
+@if (loading()) {
+<div class="flex items-center justify-center h-full text-2xl text-rose-600">
+  Loading...
+</div>
+} @else {
+<div class="mt-4">
+  <div class="container mx-auto overflow-hidden rounded-lg shadow-xs">
+    <div
+      id="date-range-picker"
+      date-rangepicker
+      class="flex items-center justify-end mb-2"
+    >
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+            />
+          </svg>
+        </div>
+        <input
+          id="datepicker-range-start"
+          name="start"
+          type="text"
+          [(ngModel)]="fromDate"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Select date start"
+        />
+      </div>
+      <span class="mx-4 text-gray-500">to</span>
+      <div class="relative">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        >
+          <svg
+            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+            />
+          </svg>
+        </div>
+        <input
+          id="datepicker-range-end"
+          name="end"
+          type="text"
+          [(ngModel)]="toDate"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Select date end"
+        />
+      </div>
+    </div>
+
+    <div class="w-full overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr
+            class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
+          >
+            <th class="px-4 py-3 hidden md:inline-block">SL</th>
+            <th class="px-4 py-3 hidden sm:inline-block">date</th>
+            <th class="px-4 py-3">Subject</th>
+            <th class="px-4 py-3">description</th>
+            <th class="px-4 py-3">link</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y">
+          @if (filterMeeting()) { @for (user of filterMeeting(); track $index) {
+          <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
+            <td class="px-4 py-3 text-xs hidden md:inline-block">
+              {{ $index + 1 }}
+            </td>
+            <td class="px-4 py-3 text-xs hidden sm:inline-block">
+              {{ user?.date }}
+            </td>
+            <td class="px-4 py-3 text-xs">{{ user?.subj }}</td>
+            <td class="px-4 py-3 text-xs">{{ user?.desc }}</td>
+            <td class="px-4 py-3 text-xs">{{ user?.link }}</td>
+          </tr>
+          } }
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-50 uppercase border-t bg-gray-800 sm:grid-cols-9"
+    ></div>
+  </div>
+</div>
+}

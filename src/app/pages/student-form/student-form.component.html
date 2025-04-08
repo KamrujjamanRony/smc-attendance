@@ -1,0 +1,136 @@
+<section>
+  <div class="w-full max-w-7xl mx-auto">
+    <div class="text-center mb-5">
+      <h2 class="text-4xl text-gray-800 capitalize font-bold">
+        {{ id ? "update student" : "add student" }}
+      </h2>
+    </div>
+    @if (model) {
+    <form
+      #form="ngForm"
+      (ngSubmit)="onFormSubmit()"
+      class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    >
+      <!-- name  -->
+      <div class="mb-4">
+        <label
+          for="name"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >name <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.name"
+          required
+        />
+      </div>
+
+      <!-- rollNo  -->
+      <div class="mb-4">
+        <label
+          for="rollNo"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >roll no. <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="rollNo"
+          name="rollNo"
+          maxlength="25"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.rollNo"
+          required
+        />
+      </div>
+      <!-- rgeNo  -->
+      <div class="mb-4">
+        <label
+          for="rgeNo"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >registration no.</label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="rgeNo"
+          name="rgeNo"
+          maxlength="25"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.rgeNo"
+          required
+        />
+      </div>
+      <!-- conNo  -->
+      <div class="mb-4">
+        <label
+          for="conNo"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >contact number</label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="conNo"
+          name="conNo"
+          maxlength="11"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.conNo"
+          required
+        />
+      </div>
+      <!-- guCoNo  -->
+      <div class="mb-4">
+        <label
+          for="guCoNo"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >Guardian contact number</label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="guCoNo"
+          name="guCoNo"
+          maxlength="11"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.guCoNo"
+          required
+        />
+      </div>
+      <!-- address  -->
+      <div class="mb-4">
+        <label
+          for="address"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >address</label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="address"
+          name="address"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.address"
+          required
+        />
+      </div>
+
+      @if (loading()) {
+      <button [disabled]="loading()" class="w-full btn btn-error text-white">
+        Processing...
+      </button>
+      } @else {
+      <input
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        [value]="id ? 'Update' : 'Add'"
+      />
+      }
+    </form>
+    }
+  </div>
+</section>

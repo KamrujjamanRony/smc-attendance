@@ -1,0 +1,67 @@
+<div
+  class="w-full p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-800 dark:border-gray-700"
+>
+  <h5
+    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+  >
+    {{ student?.name }}
+  </h5>
+  <p class="mb-3 font-normal text-gray-700 dark:text-gray-50">
+    Roll No: {{ student?.rollNo }} <br />
+    Reg No: {{ student?.rgeNo }} <br />
+  </p>
+
+  <div
+    class="flex flex-wrap justify-start items-center font-bold my-2 text-3xl gap-1"
+  >
+    <div class="form-control my-2">
+      <label
+        class="label cursor-pointer gap-1 border-2 border-green-500 rounded-xl px-2 pb-2"
+      >
+        <input
+          type="radio"
+          [name]="student?.id"
+          class="w-6 h-6 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-1 mr-1.5"
+          value="Present"
+          [checked]="selectedStatus === 'Present'"
+          (change)="setAttendance('Present')"
+        />
+        <span class="label-text !text-lg !lg:text-xl text-green-500"
+          >Present</span
+        >
+      </label>
+    </div>
+    <div class="form-control my-2">
+      <label
+        class="label cursor-pointer gap-1 border-2 border-red-500 rounded-xl px-2 pb-2"
+      >
+        <input
+          type="radio"
+          [name]="student?.id"
+          class="w-6 h-6 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 focus:ring-1 mr-1.5"
+          value="Absent"
+          [checked]="selectedStatus === 'Absent'"
+          (change)="setAttendance('Absent')"
+        />
+        <span class="label-text !text-lg !lg:text-xl text-red-500">Absent</span>
+      </label>
+    </div>
+    <div class="form-control my-2">
+      <label
+        class="label cursor-pointer gap-1 border-2 border-yellow-500 rounded-xl px-2 pb-2"
+      >
+        <input
+          type="radio"
+          [name]="student?.id"
+          class="w-6 h-6 text-yellow-600 bg-gray-100 border-gray-600 focus:ring-yellow-500 focus:ring-1 mr-1.5"
+          value="Leave"
+          [checked]="selectedStatus === 'Leave'"
+          (change)="setAttendance('Leave')"
+        />
+        <span class="label-text !text-lg !lg:text-xl text-yellow-500"
+          >Leave</span
+        >
+      </label>
+    </div>
+  </div>
+</div>

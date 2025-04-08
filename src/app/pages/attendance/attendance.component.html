@@ -1,0 +1,47 @@
+<section class="py-5">
+  <h1 class="text-xl lg:text-4xl text-gray-900 font-bold text-center">
+    Attendance
+  </h1>
+  <h1 class="text-md lg:text-xl text-rose-600 font-bold text-center mb-2">
+    ({{ subjectName }})
+  </h1>
+  <div class="flex justify-center gap-4 mb-6">
+    <button
+      class="px-4 py-2 bg-green-500 text-white rounded"
+      (click)="selectAll('Present')"
+    >
+      Select All Present
+    </button>
+    <button
+      class="px-4 py-2 bg-red-500 text-white rounded"
+      (click)="selectAll('Absent')"
+    >
+      Select All Absent
+    </button>
+    <!-- <button
+      class="px-4 py-2 bg-yellow-500 text-white rounded"
+      (click)="selectAll('Leave')"
+    >
+      Select All Leave
+    </button> -->
+  </div>
+
+  <div class="max-w-4xl mx-auto flex flex-col gap-5 mb-4">
+    @if (filterStudent()) { @for (student of filterStudent(); track $index) {
+    <app-attendance-card
+      [student]="student"
+      [selectedStatus]="attendanceMap().get(student.id) || ''"
+      (attendanceChange)="handleAttendanceChange($event)"
+    ></app-attendance-card>
+    } }
+
+    <div class="text-center mt-4">
+      <button
+        class="w-full font-bold uppercase text-xl text-white bg-gradient-to-r from-pink-300 via-pink-500 to-pink-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 rounded-lg px-5 py-2.5 text-center me-2 mb-2"
+        (click)="submitAttendance()"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</section>

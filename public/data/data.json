@@ -1,0 +1,79 @@
+{
+  "port": "http://supersoft:1002",
+  "header": {
+    "name": "SMC",
+    "address": "Satkhira, Bangladesh",
+    "contact": "017777777777",
+    "marginTop": 0
+  },
+  "options": {
+    "userOption": [
+      { "value": "Teacher", "label": "Teacher" },
+      { "value": "Stuff", "label": "Stuff" }
+    ],
+    "religionOption": [
+      { "value": "Islam", "label": "Islam" },
+      { "value": "Christianity", "label": "Christianity" },
+      { "value": "Hinduism", "label": "Hinduism" },
+      { "value": "Buddhism", "label": "Buddhism" },
+      { "value": "Others", "label": "Others" }
+    ],
+    "employeeTypeOption": [
+      { "value": "Full-Time", "label": "Full-Time" },
+      { "value": "Part-Time", "label": "Part-Time" },
+      { "value": "Intern", "label": "Intern" }
+    ],
+    "departmentOption": [
+      { "value": "departmentA", "label": "departmentA" },
+      { "value": "departmentB", "label": "departmentB" },
+      { "value": "departmentC", "label": "departmentC" }
+    ],
+    "genderOption": [
+      { "value": "male", "label": "Male" },
+      { "value": "female", "label": "Female" },
+      { "value": "other", "label": "Other" }
+    ],
+    "eduQuaOption": [
+      { "value": "SSC", "label": "Secondary School Certificate" },
+      { "value": "HSC", "label": "Higher Secondary Certificate" },
+      { "value": "B.Ed.", "label": "Bachelors degrees" },
+      { "value": "M.Ed.", "label": "Masters degrees" }
+    ],
+    "semesterOption": [
+      { "id": 991, "name": "Phase I" },
+      { "id": 992, "name": "Phase II" },
+      { "id": 993, "name": "Phase III" },
+      { "id": 994, "name": "Phase IV" }
+    ],
+    "subjectOption": [
+      { "id": 5, "name": "Anatomy", "parentId": 1 },
+      { "id": 6, "name": "Physiology", "parentId": 1 },
+      { "id": 7, "name": "Biochemistry", "parentId": 1 },
+      { "id": 8, "name": "Forensic Medicine", "parentId": 2 },
+      { "id": 9, "name": "Pharmacology", "parentId": 2 },
+      { "id": 10, "name": "Pathology", "parentId": 3 },
+      { "id": 11, "name": "Microbiology", "parentId": 3 },
+      { "id": 12, "name": "Community Medicine", "parentId": 3 },
+      { "id": 13, "name": "Internal Medicine", "parentId": 4 },
+      { "id": 14, "name": "Pediatrics", "parentId": 4 },
+      { "id": 15, "name": "Psychiatry", "parentId": 4 },
+      { "id": 16, "name": "Dermatology", "parentId": 4 },
+      { "id": 17, "name": "Physical Medicine", "parentId": 4 },
+      { "id": 18, "name": "Emergency", "parentId": 4 },
+      { "id": 19, "name": "General surgery", "parentId": 4 },
+      { "id": 20, "name": "Orthopaedics", "parentId": 4 },
+      { "id": 21, "name": "Radiology", "parentId": 4 },
+      { "id": 22, "name": "Radiotherapy", "parentId": 4 },
+      { "id": 23, "name": "Anesthesia", "parentId": 4 },
+      { "id": 24, "name": "Neurosurgery", "parentId": 4 },
+      { "id": 25, "name": "Pediatric surgery", "parentId": 4 },
+      { "id": 26, "name": "Urology", "parentId": 4 },
+      { "id": 27, "name": "Burn & Plastic surgery", "parentId": 4 },
+      { "id": 28, "name": "Emergency & Casualty", "parentId": 4 },
+      { "id": 29, "name": "Dentistry", "parentId": 4 },
+      { "id": 30, "name": "Ophthalmology", "parentId": 4 },
+      { "id": 31, "name": "Otolaryngology", "parentId": 4 },
+      { "id": 32, "name": "Gynae & Obs", "parentId": 4 }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+<section>
+  <div class="w-full max-w-7xl mx-auto">
+    <div class="text-center mb-5">
+      <h2 class="text-4xl text-gray-800 capitalize font-bold">
+        {{ id ? "update meeting" : "add meeting" }}
+      </h2>
+    </div>
+    @if (model) {
+    <form
+      #form="ngForm"
+      (ngSubmit)="onFormSubmit()"
+      class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    >
+      <!-- date  -->
+      <div class="mb-4">
+        <label
+          for="date"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >date <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="date"
+          name="date"
+          maxlength="25"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.date"
+          required
+        />
+      </div>
+      <!-- subj  -->
+      <div class="mb-4">
+        <label
+          for="subj"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >subject <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="subj"
+          name="subj"
+          maxlength="100"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.subj"
+          required
+        />
+      </div>
+      <!-- desc  -->
+      <div class="mb-4">
+        <label
+          for="desc"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >description <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="desc"
+          name="desc"
+          maxlength="500"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.desc"
+          required
+        />
+      </div>
+      <!-- link  -->
+      <div class="mb-4">
+        <label
+          for="link"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >link <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="link"
+          name="link"
+          maxlength="250"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.link"
+          required
+        />
+      </div>
+
+      @if (loading()) {
+      <button [disabled]="loading()" class="w-full btn btn-error text-white">
+        Processing...
+      </button>
+      } @else {
+      <input
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        [value]="id ? 'Update' : 'Add'"
+      />
+      }
+    </form>
+    }
+  </div>
+</section>

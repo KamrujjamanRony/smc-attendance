@@ -1,0 +1,70 @@
+<section>
+  <div class="w-full max-w-7xl mx-auto">
+    <div class="text-center mb-5">
+      <h2 class="text-4xl text-gray-800 capitalize font-bold">
+        {{ id ? "update subject" : "add subject" }}
+      </h2>
+    </div>
+    @if (model) {
+    <form
+      #form="ngForm"
+      (ngSubmit)="onFormSubmit()"
+      class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    >
+      <!-- semester  -->
+      <div class="mb-4">
+        <label
+          for="semester"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >Phase Name <span class="text-rose-600">*</span></label
+        >
+        <select
+          id="semester"
+          name="semester"
+          type="text"
+          [(ngModel)]="model.semester"
+          placeholder=""
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          required
+        >
+          <option value="" class="capitalize">Select Option</option>
+          @for(option of semesterOption(); track $index){
+          <option [value]="option?.id" class="capitalize">
+            {{ option?.name }}
+          </option>
+          }
+        </select>
+      </div>
+      <!-- subName  -->
+      <div class="mb-4">
+        <label
+          for="subName"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >Subject Name <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="subName"
+          name="subName"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.subName"
+          required
+        />
+      </div>
+
+      @if (loading()) {
+      <button [disabled]="loading()" class="w-full btn btn-error text-white">
+        Processing...
+      </button>
+      } @else {
+      <input
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        [value]="id ? 'Update' : 'Add'"
+      />
+      }
+    </form>
+    }
+  </div>
+</section>
