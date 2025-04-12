@@ -40,7 +40,11 @@ export class LoginComponent {
       this.loginSubscription = this.LoginService.login(this.form.value)
         .subscribe({
           next: (response: any) => {
-            this.authService.setUser(response);
+            if (response.length === 0) {
+              this.toastService.showMessage('error', 'Error', 'Invalid UserName Or Password!');
+              return;
+            }
+            this.authService.setUser(response[0]);
             this.toastService.showMessage('success', 'Successful', 'User Login Successfully!');
             this.router.navigate(['/home']);
           },

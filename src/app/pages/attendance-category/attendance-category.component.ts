@@ -48,7 +48,6 @@ export class AttendanceCategoryComponent {
     const target = e.target as HTMLInputElement;
     const id = target.value;
     this.subjectService.getSubject("", id).subscribe((data: any) => {
-      console.log(data)
       this.subjectOption.set(data);
     })
     // this.dataService.getOptions().subscribe((data: any) => {

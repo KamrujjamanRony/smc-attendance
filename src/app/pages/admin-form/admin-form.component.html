@@ -1,0 +1,85 @@
+<section>
+  <div class="w-full max-w-7xl mx-auto">
+    <div class="text-center mb-5">
+      <h2 class="text-4xl text-gray-800 capitalize font-bold">
+        {{ id ? "update admin" : "add admin" }}
+      </h2>
+    </div>
+    @if (model) {
+    <form
+      #form="ngForm"
+      (ngSubmit)="onFormSubmit()"
+      class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    >
+      <!-- userName  -->
+      <div class="mb-4">
+        <label
+          for="userName"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >userName <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="userName"
+          name="userName"
+          maxlength="50"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.userName"
+          required
+        />
+      </div>
+      <!-- password  -->
+      <div class="mb-4">
+        <label
+          for="password"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >password <span class="text-rose-600">*</span></label
+        >
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="password"
+          name="password"
+          maxlength="100"
+          type="text"
+          placeholder="Type here"
+          [(ngModel)]="model.password"
+          required
+        />
+      </div>
+      <!-- type  -->
+      <div class="mb-4">
+        <label
+          for="type"
+          class="block text-gray-50 text-sm font-bold mb-2 capitalize"
+          >type <span class="text-rose-600">*</span></label
+        >
+        <select
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-50 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-600 placeholder:text-gray-300"
+          id="type"
+          name="type"
+          [(ngModel)]="model.type"
+          required
+        >
+          <option value="" disabled selected>Select type</option>
+          <option value="admin">Admin</option>
+          <option value="teacher">Teacher</option>
+          <option value="stuff">Stuff</option>
+        </select>
+      </div>
+
+      @if (loading()) {
+      <button [disabled]="loading()" class="w-full btn btn-error text-white">
+        Processing...
+      </button>
+      } @else {
+      <input
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        [value]="id ? 'Update' : 'Add'"
+      />
+      }
+    </form>
+    }
+  </div>
+</section>

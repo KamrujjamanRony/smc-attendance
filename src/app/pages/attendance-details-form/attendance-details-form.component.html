@@ -1,0 +1,105 @@
+<section>
+  <div class="w-full max-w-7xl mx-auto">
+    <div class="text-center mb-5">
+      <h2 class="text-4xl text-gray-800 capitalize font-bold">
+        {{ id ? "update attendance details" : "add attendance details" }}
+      </h2>
+    </div>
+    @if (model) {
+    <form
+      #form="ngForm"
+      (ngSubmit)="onFormSubmit()"
+      class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    >
+      <!-- student -->
+      <div>
+        <label
+          for="student"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
+          >student <span class="text-rose-600">*</span></label
+        >
+        @if (id) {
+        <app-search-select-edit
+          [selected]="model.studentId"
+          [options]="studentOption()"
+          (selectedChange)="handleStudentChange($event)"
+        ></app-search-select-edit>
+        }
+      </div>
+      <!-- status  -->
+      @if (model.studentId) {
+      <div
+        class="flex flex-wrap justify-start items-center font-bold my-2 text-3xl gap-1"
+      >
+        <!-- Present -->
+        <div class="form-control my-2">
+          <label
+            class="label cursor-pointer gap-1 border-2 border-green-500 rounded-xl px-2 pb-2"
+          >
+            <input
+              type="radio"
+              [name]="'attendance-' + model.studentId"
+              class="w-6 h-6 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-1 mr-1.5"
+              value="1"
+              [checked]="model.status == 1"
+              (change)="setAttendance(1)"
+            />
+            <span class="label-text !text-lg !lg:text-xl text-green-500"
+              >Present</span
+            >
+          </label>
+        </div>
+
+        <!-- Absent -->
+        <div class="form-control my-2">
+          <label
+            class="label cursor-pointer gap-1 border-2 border-red-500 rounded-xl px-2 pb-2"
+          >
+            <input
+              type="radio"
+              [name]="'attendance-' + model.studentId"
+              class="w-6 h-6 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 focus:ring-1 mr-1.5"
+              value="2"
+              [checked]="model.status == 2"
+              (change)="setAttendance(2)"
+            />
+            <span class="label-text !text-lg !lg:text-xl text-red-500"
+              >Absent</span
+            >
+          </label>
+        </div>
+
+        <!-- Leave -->
+        <div class="form-control my-2">
+          <label
+            class="label cursor-pointer gap-1 border-2 border-yellow-500 rounded-xl px-2 pb-2"
+          >
+            <input
+              type="radio"
+              [name]="'attendance-' + model.studentId"
+              class="w-6 h-6 text-yellow-600 bg-gray-100 border-gray-600 focus:ring-yellow-500 focus:ring-1 mr-1.5"
+              value="3"
+              [checked]="model.status == 3"
+              (change)="setAttendance(3)"
+            />
+            <span class="label-text !text-lg !lg:text-xl text-yellow-500"
+              >Leave</span
+            >
+          </label>
+        </div>
+      </div>
+      } @if (loading()) {
+      <button [disabled]="loading()" class="w-full btn btn-error text-white">
+        Processing...
+      </button>
+      } @else {
+      <input
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        [value]="id ? 'Update' : 'Add'"
+      />
+      }
+    </form>
+    }
+  </div>
+</section>

@@ -26,7 +26,7 @@ export class StudentService {
   getStudent(id: any, search: any): Observable<any> {
     return this.apiCall<any>(`/Search`, 'post', {
       "search": search || "",
-      "id": id || "",
+      "id": id || null,
     });
   }
 

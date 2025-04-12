@@ -1,0 +1,108 @@
+<app-cover
+  title="AttendanceDetails list"
+  sub1="Dashboard"
+  sub2="AttendanceDetails"
+></app-cover>
+
+<div class="container mx-auto flex justify-end mt-2">
+  <div
+    id="date-range-picker"
+    date-rangepicker
+    class="flex items-center justify-end mb-2"
+  >
+    <div class="relative max-w-sm">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      ></div>
+      <input
+        id="fromDate"
+        type="date"
+        [(ngModel)]="fromDate"
+        (ngModelChange)="filterData()"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Select date"
+      />
+    </div>
+
+    <span class="mx-4 text-gray-800 font-bold">to</span>
+    <div class="relative max-w-sm">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      ></div>
+      <input
+        id="toDate"
+        type="date"
+        [(ngModel)]="toDate"
+        (ngModelChange)="filterData()"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Select date"
+      />
+    </div>
+  </div>
+</div>
+
+@if (loading()) {
+<div class="flex items-center justify-center h-full text-2xl text-rose-600">
+  Loading...
+</div>
+} @else {
+<div class="mt-4">
+  <div class="container mx-auto overflow-hidden rounded-lg shadow-xs">
+    <div class="w-full overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr
+            class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
+          >
+            <th class="px-4 py-3 hidden md:inline-block">SL</th>
+            <th class="px-4 py-3">date</th>
+            <th class="px-4 py-3">studentName</th>
+            <th class="px-4 py-3">subjectName</th>
+            <th class="px-4 py-3">status</th>
+            <th class="px-4 py-3">postBy</th>
+            <th class="px-4 py-3 max-w-18 md:max-w-12 min-w-12">Edit</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y">
+          @if (filterAttendanceDetails()) { @for (user of
+          filterAttendanceDetails(); track $index) {
+          <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
+            <td class="px-4 py-3 text-xs hidden md:inline-block">
+              {{ $index + 1 }}
+            </td>
+            <td class="px-4 py-3 text-xs">
+              {{ user?.date | date : "dd/MM/yyyy" }}
+            </td>
+            <td class="px-4 py-3 text-xs">
+              {{ user?.studentName }}
+            </td>
+            <td class="px-4 py-3 text-xs">{{ user?.subjectName }}</td>
+            <td class="px-4 py-3 text-xs">
+              {{
+                user?.status === 1
+                  ? "Present"
+                  : user?.status === 2
+                  ? "Absent"
+                  : "Leave"
+              }}
+            </td>
+            <td class="px-4 py-3 text-xs">{{ user?.postBy }}</td>
+            <td class="px-4 py-3 text-xs">
+              <a
+                [routerLink]="['edit', user?.id]"
+                class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 hover:text-green-100 hover:bg-green-700 rounded mr-2 inline-block my-2"
+              >
+                Edit
+              </a>
+            </td>
+          </tr>
+          } }
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-50 uppercase border-t bg-gray-800 sm:grid-cols-9"
+    ></div>
+  </div>
+</div>
+}

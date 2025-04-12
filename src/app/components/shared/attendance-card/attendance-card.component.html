@@ -22,9 +22,9 @@
           type="radio"
           [name]="student?.id"
           class="w-6 h-6 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-1 mr-1.5"
-          value="Present"
-          [checked]="selectedStatus === 'Present'"
-          (change)="setAttendance('Present')"
+          value="1"
+          [checked]="selectedStatus == 1"
+          (change)="setAttendance(1)"
         />
         <span class="label-text !text-lg !lg:text-xl text-green-500"
           >Present</span
@@ -39,9 +39,9 @@
           type="radio"
           [name]="student?.id"
           class="w-6 h-6 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 focus:ring-1 mr-1.5"
-          value="Absent"
-          [checked]="selectedStatus === 'Absent'"
-          (change)="setAttendance('Absent')"
+          value="2"
+          [checked]="selectedStatus == 2"
+          (change)="setAttendance(2)"
         />
         <span class="label-text !text-lg !lg:text-xl text-red-500">Absent</span>
       </label>
@@ -54,9 +54,9 @@
           type="radio"
           [name]="student?.id"
           class="w-6 h-6 text-yellow-600 bg-gray-100 border-gray-600 focus:ring-yellow-500 focus:ring-1 mr-1.5"
-          value="Leave"
-          [checked]="selectedStatus === 'Leave'"
-          (change)="setAttendance('Leave')"
+          value="3"
+          [checked]="selectedStatus == 3"
+          (change)="setAttendance(3)"
         />
         <span class="label-text !text-lg !lg:text-xl text-yellow-500"
           >Leave</span

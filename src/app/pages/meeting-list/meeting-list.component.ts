@@ -3,10 +3,11 @@ import { CoverComponent } from '../../components/shared/cover/cover.component';
 import { RouterLink } from '@angular/router';
 import { ToastService } from '../../components/primeng/toast/toast.service';
 import { MeetingService } from '../../services/meeting.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-meeting-list',
-  imports: [CoverComponent, RouterLink],
+  imports: [CoverComponent, RouterLink, CommonModule],
   templateUrl: './meeting-list.component.html',
   styleUrl: './meeting-list.component.css'
 })

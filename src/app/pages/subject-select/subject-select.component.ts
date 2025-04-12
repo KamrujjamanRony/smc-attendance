@@ -1,91 +1,136 @@
 import { Component, inject, signal } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../components/primeng/toast/toast.service';
 import { Subscription, map } from 'rxjs';
-import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MultiSelectComponent } from "../../components/primeng/mult-select/multi-select.component";
 import { SearchSelectComponent } from "../../components/primeng/search-select/search-select.component";
 import { StudentService } from '../../services/student.service';
 import { SubjectService } from '../../services/subject.service';
+import { StudentWiseSubjectService } from '../../services/student-wise-subject.service';
+import { SearchSelectEditComponent } from "../../components/primeng/search-select/search-select-edit.component";
+import { MultiSelectEditComponent } from "../../components/primeng/mult-select/multi-select-edit.component";
 
 @Component({
   selector: 'app-subject-select',
-  imports: [ReactiveFormsModule, MultiSelectComponent, SearchSelectComponent],
+  imports: [FormsModule, MultiSelectComponent, SearchSelectComponent, SearchSelectEditComponent, MultiSelectEditComponent],
   templateUrl: './subject-select.component.html',
   styleUrl: './subject-select.component.css'
 })
 export class SubjectSelectComponent {
-  private dataService = inject(DataService);
+  private studentWiseSubjectService = inject(StudentWiseSubjectService);
   private subjectService = inject(SubjectService);
   private studentService = inject(StudentService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private toastService = inject(ToastService);
-  private loginSubscription?: Subscription;
+  private formSubscription?: Subscription;
+  private paramsSubscription?: Subscription;
+  id: any = null;
   studentOption = signal<any[]>([]);
   semesterOption = signal<any[]>([]);
   subjectOption = signal<any[]>([]);
-  fb = inject(NonNullableFormBuilder);
-  isSubmitted = false;
+  loading = signal<boolean>(false);
+  model?: any;
 
-  form = this.fb.group({
-    student: ['', Validators.required],
-    subject: ['', Validators.required],
-  });
-
-  // Simplified method to get form controls
-  getControl(controlName: string): FormControl {
-    return this.form.get(controlName) as FormControl;
+  constructor() {
+    this.onReset();
   }
 
   ngOnInit() {
     this.onLoadOptions();
+    this.paramsSubscription = this.route.paramMap.subscribe({
+      next: (params) => {
+        this.id = params.get('id');
+        if (this.id) {
+          this.studentWiseSubjectService.getStuWiseSub(this.id, "")
+            .subscribe({
+              next: (response) => {
+                if (response.length > 0) {
+                  this.model = response[0];
+                }
+              }
+            });
+        }
+      }
+    });
   };
 
   onLoadOptions() {
     this.subjectService.getSubject("", "").subscribe((data: any) => {
-      this.subjectOption.set(data);
-    })
-    // this.dataService.getOptions().subscribe((data: any) => {
-    //   this.subjectOption.set(data.subjectOption);
-    // })
-    this.studentService.getStudent("", "").subscribe(data => {
-      this.studentOption.set(data);
+      this.subjectOption.set(data.map((item: any) => ({ id: item.id, label: `${item.subName} (Phase ${item.semester.slice(-1)})` })));
     });
-  }
-
-  onInputChanged(e: Event) {
-    e.preventDefault();
-    const target = e.target as HTMLInputElement;
-    const id = target.value;
-    this.dataService.getOptions().subscribe((data: any) => {
-      this.subjectOption.set(data.subjectOption.filter((s: any) => s.parentId == id));
-    })
-  }
+    this.studentService.getStudent("", "").subscribe((data: any) => {
+      if (data.length > 0) {
+        this.studentOption.set(data.map((item: any) => ({ id: item.id, label: `${item.rollNo} - ${item.name} - ${item.rgeNo}` })));
+      }
+    });
+  };
 
   handleStudentChange(data: any) {
-    this.getControl('student').setValue(data?.id);
+    this.model.studentId = this.id ? data : data?.id;
   }
 
   handleSubjectChange(data: any) {
-    const ids = data.map((s: any) => s.id);
-    this.getControl('subject').setValue(ids);
+    const ids = this.id ? data : data.map((s: any) => s.id);
+    this.model.subjectIds = ids;
   }
 
 
-  onSubmit(): void {
-    this.isSubmitted = true;
-    if (this.form.valid) {
-      const formData = this.form.value;
-      console.log(formData)
-      this.isSubmitted = true;
+  onFormSubmit(): void {
+    this.loading.set(true);
+    const { studentId, subjectIds } = this.model;
+    // console.log(this.model)
+    if (studentId && subjectIds) {
+
+      if (this.id) {
+        this.formSubscription = this.studentWiseSubjectService.updateStuWiseSub(this.id, this.model)
+          .subscribe({
+            next: (response) => {
+              this.toastService.showMessage('success', 'Success', 'Student Wise Subject Update successfully');
+              this.onReset();
+              this.id = null;
+              this.loading.set(false);
+              this.router.navigateByUrl('/subject-selection');
+            },
+            error: (error) => {
+              this.toastService.showMessage('error', 'Error', `Error Update Subject: ${error.error.message || error.error.title}`);
+              console.error('Error Update Subject:', error.error);
+              this.loading.set(false);
+            }
+          });
+      } else {
+        this.formSubscription = this.studentWiseSubjectService.addStuWiseSub(this.model)
+          .subscribe({
+            next: (response) => {
+              this.toastService.showMessage('success', 'Success', 'Student Wise Subject Add successfully');
+              this.onReset();
+              this.loading.set(false);
+              this.router.navigateByUrl('/subject-selection');
+            },
+            error: (error) => {
+              this.toastService.showMessage('error', 'Error', `Error Add Subject: ${error.error.message || error.error.title}`);
+              console.error('Error Add Subject:', error.error);
+              this.loading.set(false);
+            }
+          });
+      }
     } else {
       this.toastService.showMessage('warn', 'Warning', 'Form is invalid! Please Fill All Recommended Field!');
+      this.loading.set(false);
     }
   };
 
+  onReset() {
+    this.model = {
+      studentId: "",
+      subjectIds: [],
+    };
+  }
+
   ngOnDestroy(): void {
-    this.loginSubscription?.unsubscribe();
+    this.paramsSubscription?.unsubscribe();
+    this.formSubscription?.unsubscribe();
   }
 
 }

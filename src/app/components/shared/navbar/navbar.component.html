@@ -55,6 +55,26 @@
           >
         </li>
         }
+        <li>
+          @if(user){
+          <button
+            class="block w-full text-start py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            aria-current="page"
+            (click)="closeMenu()"
+            (click)="logOut()"
+          >
+            Logout
+          </button>
+          } @else {
+          <a
+            [routerLink]="['/login']"
+            class="block w-full text-start py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            aria-current="page"
+            (click)="closeMenu()"
+            >Login</a
+          >
+          }
+        </li>
       </ul>
     </div>
     }

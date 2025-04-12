@@ -8,19 +8,32 @@
   <div class="flex justify-center gap-4 mb-6">
     <button
       class="px-4 py-2 bg-green-500 text-white rounded"
-      (click)="selectAll('Present')"
+      (click)="selectAll(1)"
     >
       Select All Present
     </button>
     <button
       class="px-4 py-2 bg-red-500 text-white rounded"
-      (click)="selectAll('Absent')"
+      (click)="selectAll(2)"
     >
       Select All Absent
     </button>
+    <!-- <div class="relative max-w-sm">
+      <div
+        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+      ></div>
+      <input
+        id="selectedDate"
+        type="date"
+        [(ngModel)]="selectedDate"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Select date"
+      />
+    </div> -->
+
     <!-- <button
       class="px-4 py-2 bg-yellow-500 text-white rounded"
-      (click)="selectAll('Leave')"
+      (click)="selectAll(3)"
     >
       Select All Leave
     </button> -->
@@ -30,7 +43,7 @@
     @if (filterStudent()) { @for (student of filterStudent(); track $index) {
     <app-attendance-card
       [student]="student"
-      [selectedStatus]="attendanceMap().get(student.id) || ''"
+      [selectedStatus]="attendanceMap().get(student.id) || 0"
       (attendanceChange)="handleAttendanceChange($event)"
     ></app-attendance-card>
     } }

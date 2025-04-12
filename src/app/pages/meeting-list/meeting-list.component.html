@@ -23,7 +23,7 @@
             class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
           >
             <th class="px-4 py-3 hidden md:inline-block">SL</th>
-            <th class="px-4 py-3 hidden sm:inline-block">date</th>
+            <th class="px-4 py-3">date</th>
             <th class="px-4 py-3">Subject</th>
             <th class="px-4 py-3">description</th>
             <th class="px-4 py-3">link</th>
@@ -37,8 +37,8 @@
             <td class="px-4 py-3 text-xs hidden md:inline-block">
               {{ $index + 1 }}
             </td>
-            <td class="px-4 py-3 text-xs hidden sm:inline-block">
-              {{ user?.date }}
+            <td class="px-4 py-3 text-xs">
+              {{ user?.date | date : "dd/MM/yyyy" }}
             </td>
             <td class="px-4 py-3 text-xs">{{ user?.subj }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.desc }}</td>

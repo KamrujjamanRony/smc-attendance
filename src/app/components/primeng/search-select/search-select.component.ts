@@ -12,9 +12,9 @@ import { FormsModule } from '@angular/forms';
       [options]="options"
       [(ngModel)]="selected"
       (onChange)="onSelectionChange(selected)"
-      optionLabel="name"
+      optionLabel="label"
       [filter]="true"
-      [filterBy]="'name,rollNo'"
+      filterBy="label"
       [showClear]="true"
       placeholder="Select option"
       class="!bg-gray-600 !border !text-sm !rounded !focus:ring-blue-500 !focus:border-blue-500 block w-full p-0.5 border-gray-500 !placeholder-gray-100 !text-white"
@@ -22,25 +22,19 @@ import { FormsModule } from '@angular/forms';
     >
       <!-- Selected item template -->
       <ng-template let-selectedOption pTemplate="selectedItem">
-        <div class="flex items-center gap-2">
-          <p>{{ selectedOption?.rollNo }}</p>
-          <p>- {{ selectedOption?.name }}</p>
-        </div>
+      {{ selectedOption?.label }}
       </ng-template>
 
       <!-- Dropdown list template -->
       <ng-template let-option pTemplate="item">
-        <div class="flex items-center gap-2">
-          <p>{{ option?.rollNo }}</p>
-          <p>- {{ option?.name }}</p>
-        </div>
+        {{ option?.label }}
       </ng-template>
     </p-dropdown>
   `,
 })
 export class SearchSelectComponent {
   @Input() options: any[] = [];
-  @Input() selected: any;
+  selected: any;
   @Output() selectedChange = new EventEmitter<any>();
 
   onSelectionChange(value: any) {

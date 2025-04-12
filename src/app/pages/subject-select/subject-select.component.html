@@ -2,7 +2,7 @@
   <div
     class="w-full max-w-6xl p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
   >
-    <form class="space-y-6" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="space-y-6" #form="ngForm" (ngSubmit)="onFormSubmit()">
       <h5
         class="block mb-2 text-xl text-center font-medium text-gray-900 dark:text-white capitalize"
       >
@@ -15,10 +15,18 @@
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
           >student <span class="text-rose-600">*</span></label
         >
+        @if (id) {
+        <app-search-select-edit
+          [selected]="model.studentId"
+          [options]="studentOption()"
+          (selectedChange)="handleStudentChange($event)"
+        ></app-search-select-edit>
+        } @else {
         <app-search-select
           [options]="studentOption()"
           (selectedChange)="handleStudentChange($event)"
         ></app-search-select>
+        }
       </div>
       <!-- subject -->
       <div>
@@ -27,17 +35,31 @@
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
           >subject <span class="text-rose-600">*</span></label
         >
+        @if (id) {
+        <app-multi-select-edit
+          [selectedOptions]="model.subjectIds"
+          [options]="subjectOption()"
+          (subjectChange)="handleSubjectChange($event)"
+        ></app-multi-select-edit>
+        } @else {
         <app-multi-select
           [options]="subjectOption()"
           (subjectChange)="handleSubjectChange($event)"
         ></app-multi-select>
+        }
       </div>
-      <button
+
+      @if (loading()) {
+      <button [disabled]="loading()" class="w-full btn btn-error text-white">
+        Processing...
+      </button>
+      } @else {
+      <input
         type="submit"
         class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Submit
-      </button>
+        [value]="id ? 'Update' : 'Add'"
+      />
+      }
     </form>
   </div>
 </section>

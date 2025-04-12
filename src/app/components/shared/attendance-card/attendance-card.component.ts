@@ -8,10 +8,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class AttendanceCardComponent {
   @Input() student: any;
-  @Input() selectedStatus: string = '';
-  @Output() attendanceChange = new EventEmitter<{ id: number, status: string }>();
+  @Input() selectedStatus: number = 0;
+  @Output() attendanceChange = new EventEmitter<{ id: number, status: number }>();
 
-  setAttendance(status: string) {
+  setAttendance(status: number) {
     this.attendanceChange.emit({ id: this.student.id, status });
   }
 
