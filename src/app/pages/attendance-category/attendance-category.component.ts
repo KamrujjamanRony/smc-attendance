@@ -61,7 +61,7 @@ export class AttendanceCategoryComponent {
     if (this.form.valid) {
       const formData = this.form.value;
       this.isSubmitted = true;
-      this.router.navigateByUrl('/attendance-list/' + formData.subject);
+      this.router.navigateByUrl('/attendance-submit/' + formData.subject);
     } else {
       this.toastService.showMessage('warn', 'Warning', 'Form is invalid! Please Fill All Recommended Field!');
     }
