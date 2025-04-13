@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
       filterBy="label"
       [showClear]="true"
       placeholder="Select option"
-      class="!bg-gray-600 !border !text-sm !rounded !focus:ring-blue-500 !focus:border-blue-500 block w-full p-0.5 border-gray-500 !placeholder-gray-100 !text-white"
+      class="w-full"
       dropdownIcon="pi pi-chevron-down"
     >
       <!-- Selected item template -->

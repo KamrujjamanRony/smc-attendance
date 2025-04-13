@@ -14,7 +14,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
         optionLabel="label" 
         placeholder="Select Options" 
         [maxSelectedLabels]="20" 
-        styleClass="!bg-gray-600 !border !text-sm !rounded !focus:ring-blue-500 !focus:border-blue-500 block w-full p-0.5 border-gray-500 !placeholder-gray-100 !text-white">
+        styleClass="w-full">
       </p-multiselect>
   `,
 })

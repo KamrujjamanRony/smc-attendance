@@ -36,7 +36,8 @@ export class MeetingFormComponent {
             .subscribe({
               next: (response) => {
                 if (response) {
-                  this.model = response[0];
+                  this.model = { ...response[0], date: response[0].date.split('T')[0] };
+                  console.log(this.model)
                 }
               }
             });

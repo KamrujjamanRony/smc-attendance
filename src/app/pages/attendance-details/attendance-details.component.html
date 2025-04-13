@@ -31,7 +31,7 @@
           type="date"
           [(ngModel)]="fromDate"
           (ngModelChange)="filterData()"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-950 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
           placeholder="Select date"
         />
       </div>
@@ -46,7 +46,7 @@
           type="date"
           [(ngModel)]="toDate"
           (ngModelChange)="filterData()"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-950 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
           placeholder="Select date"
         />
       </div>
@@ -134,8 +134,9 @@
               </td>
               <!-- <td class="px-4 py-3 text-xs"></td> -->
               <td class="px-4 py-3 text-xs"></td>
+              @if (auth.type === "admin") {
               <td class="px-4 py-3 text-xs"></td>
-              <td class="px-4 py-3 text-xs"></td>
+              }
             </tr>
             } }
           </tbody>

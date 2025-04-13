@@ -1,5 +1,5 @@
 {
-  "port": "http://supersoft:1002",
+  "port": "https://smc-api.supersoftbd.com",
   "header": {
     "name": "SMC",
     "address": "Satkhira, Bangladesh",

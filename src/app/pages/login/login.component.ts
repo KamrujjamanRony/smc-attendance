@@ -21,6 +21,7 @@ export class LoginComponent {
   private loginSubscription?: Subscription;
   fb = inject(NonNullableFormBuilder);
   isSubmitted = false;
+  isLoading = signal(false);
 
   form = this.fb.group({
     userName: ['', [Validators.required]],
@@ -37,19 +38,23 @@ export class LoginComponent {
   onSubmit(): void {
     this.isSubmitted = true;
     if (this.form.valid) {
+      this.isLoading.set(true);
       this.loginSubscription = this.LoginService.login(this.form.value)
         .subscribe({
           next: (response: any) => {
             if (response.length === 0) {
               this.toastService.showMessage('error', 'Error', 'Invalid UserName Or Password!');
+              this.isLoading.set(false);
               return;
             }
             this.authService.setUser(response[0]);
             this.toastService.showMessage('success', 'Successful', 'User Login Successfully!');
             this.router.navigate(['/home']);
+            this.isLoading.set(false);
           },
           error: (error) => {
             console.error('Error login user:', error);
+            this.isLoading.set(false);
             if (error.error.message || error.error.title) {
               this.toastService.showMessage('error', 'Error', `${error.error.status} : ${error.error.message || error.error.title}`);
             }
