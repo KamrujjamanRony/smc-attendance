@@ -22,7 +22,7 @@
           <tr
             class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
           >
-            <th class="px-4 py-3 hidden md:inline-block">SL</th>
+            <th class="px-4 py-3 hidden">SL</th>
             <th class="px-4 py-3">username</th>
             <th class="px-4 py-3">password</th>
             <th class="px-4 py-3">type</th>
@@ -33,7 +33,7 @@
         <tbody class="bg-white divide-y">
           @if (filterLogin()) { @for (user of filterLogin(); track $index) {
           <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
-            <td class="px-4 py-3 text-xs hidden md:inline-block">
+            <td class="px-4 py-3 text-xs hidden">
               {{ $index + 1 }}
             </td>
             <td class="px-4 py-3 text-xs">

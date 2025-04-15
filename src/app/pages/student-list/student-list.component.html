@@ -22,9 +22,9 @@
           <tr
             class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
           >
-            <th class="px-4 py-3 hidden md:inline-block">SL</th>
-            <th class="px-4 py-3">Name</th>
+            <th class="px-4 py-3 hidden">SL</th>
             <th class="px-4 py-3">Roll No.</th>
+            <th class="px-4 py-3">Name</th>
             <th class="px-4 py-3">Reg. No.</th>
             <th class="px-4 py-3">Contact Number</th>
             <th class="px-4 py-3">Guardian Contact Number</th>
@@ -36,13 +36,13 @@
         <tbody class="bg-white divide-y">
           @if (filterStudent()) { @for (user of filterStudent(); track $index) {
           <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
-            <td class="px-4 py-3 text-xs hidden md:inline-block">
+            <td class="px-4 py-3 text-xs hidden">
               {{ $index + 1 }}
             </td>
+            <td class="px-4 py-3 text-xs">{{ user?.rollNo }}</td>
             <td class="px-4 py-3 text-xs">
               {{ user?.name }}
             </td>
-            <td class="px-4 py-3 text-xs">{{ user?.rollNo }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.rgeNo }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.conNo }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.guCoNo }}</td>

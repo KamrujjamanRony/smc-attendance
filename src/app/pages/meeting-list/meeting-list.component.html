@@ -22,7 +22,7 @@
           <tr
             class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
           >
-            <th class="px-4 py-3 hidden md:inline-block">SL</th>
+            <th class="px-4 py-3 hidden">SL</th>
             <th class="px-4 py-3">date</th>
             <th class="px-4 py-3">Subject</th>
             <th class="px-4 py-3">description</th>
@@ -34,7 +34,7 @@
         <tbody class="bg-white divide-y">
           @if (filterMeeting()) { @for (user of filterMeeting(); track $index) {
           <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
-            <td class="px-4 py-3 text-xs hidden md:inline-block">
+            <td class="px-4 py-3 text-xs hidden">
               {{ $index + 1 }}
             </td>
             <td class="px-4 py-3 text-xs">
