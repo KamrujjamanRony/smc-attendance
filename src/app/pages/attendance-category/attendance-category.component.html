@@ -1,10 +1,10 @@
 <section class="flex justify-center items-center h-screen bg-teal-100">
   <div
-    class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"
+    class="w-full max-w-sm p-4 border rounded-lg shadow-sm sm:p-6 md:p-8 bg-gray-800 border-gray-700"
   >
     <form class="space-y-6" [formGroup]="form" (ngSubmit)="onSubmit()">
       <h5
-        class="block mb-2 text-xl text-center font-medium text-gray-900 dark:text-white capitalize"
+        class="block mb-2 text-xl text-center font-medium text-gray-50 capitalize"
       >
         Attendance Category
       </h5>
@@ -12,7 +12,7 @@
       <div>
         <label
           for="year"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
+          class="block mb-2 text-sm font-medium text-gray-50 capitalize"
           >Phase <span class="text-rose-600">*</span></label
         >
         <select
@@ -20,7 +20,7 @@
           name="year"
           [formControl]="getControl('year')"
           placeholder=""
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-950 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
           [class.invalid]="
             (getControl('year').invalid && getControl('year').touched) ||
             isSubmitted
@@ -39,7 +39,7 @@
       <div>
         <label
           for="subject"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white capitalize"
+          class="block mb-2 text-sm font-medium text-gray-50 capitalize"
           >subject <span class="text-rose-600">*</span></label
         >
         <select
@@ -47,7 +47,7 @@
           name="subject"
           [formControl]="getControl('subject')"
           placeholder=""
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-950 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
           [class.invalid]="
             (getControl('subject').invalid && getControl('subject').touched) ||
             isSubmitted
@@ -61,9 +61,61 @@
           }
         </select>
       </div>
+      <!-- session -->
+      <div>
+        <label
+          for="session"
+          class="block mb-2 text-sm font-medium text-gray-50 capitalize"
+          >session <span class="text-rose-600">*</span></label
+        >
+        <select
+          id="session"
+          name="session"
+          [formControl]="getControl('session')"
+          placeholder=""
+          class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
+          [class.invalid]="
+            (getControl('session').invalid && getControl('session').touched) ||
+            isSubmitted
+          "
+        >
+          <option value="" class="capitalize">Select Option</option>
+          @for(option of sessionOption(); track $index){
+          <option [value]="option" class="capitalize">
+            {{ option }}
+          </option>
+          }
+        </select>
+      </div>
+      <!-- batch -->
+      <div>
+        <label
+          for="batch"
+          class="block mb-2 text-sm font-medium text-gray-50 capitalize"
+          >batch <span class="text-rose-600">*</span></label
+        >
+        <select
+          id="batch"
+          name="batch"
+          [formControl]="getControl('batch')"
+          placeholder=""
+          class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
+          [class.invalid]="
+            (getControl('batch').invalid && getControl('batch').touched) ||
+            isSubmitted
+          "
+        >
+          <option value="" class="capitalize">Select Option</option>
+          @for(option of batchOption(); track $index){
+          <option [value]="option" class="capitalize">
+            {{ option }}
+          </option>
+          }
+        </select>
+      </div>
       <button
         type="submit"
-        class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        class="w-full focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
       >
         Submit
       </button>

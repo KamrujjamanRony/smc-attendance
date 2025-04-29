@@ -1,6 +1,15 @@
 <app-cover title="Student list" sub1="Dashboard" sub2="Student"></app-cover>
 
-<div class="container mx-auto flex justify-end mt-2">
+<div class="container mx-auto flex justify-end mt-2 gap-2">
+  <input
+    id="search"
+    type="text"
+    [(ngModel)]="search"
+    (ngModelChange)="filterData()"
+    autocomplete="off"
+    class="border text-gray-50 text-sm rounded block w-full ps-5 p-2.5 bg-gray-950 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 cursor-pointer max-w-sm"
+    placeholder="Search Student"
+  />
   <a
     routerLink="add"
     class="bg-red-500 text-md md:text-xl hover:bg-red-400 text-white font-bold py-1 lg:py-2 px-2 lg:px-4 border-b-4 border-red-700 hover:border-red-500 rounded uppercase"
@@ -26,7 +35,8 @@
             <th class="px-4 py-3">Roll No.</th>
             <th class="px-4 py-3">Name</th>
             <th class="px-4 py-3">Reg. No.</th>
-            <th class="px-4 py-3">Season</th>
+            <th class="px-4 py-3">session</th>
+            <th class="px-4 py-3">Batch</th>
             <th class="px-4 py-3">Contact Number</th>
             <th class="px-4 py-3">Guardian Contact Number</th>
             <th class="px-4 py-3">Address</th>
@@ -46,6 +56,7 @@
             </td>
             <td class="px-4 py-3 text-xs">{{ user?.rgeNo }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.sOthers1 }}</td>
+            <td class="px-4 py-3 text-xs">{{ user?.sOthers2 }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.conNo }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.guCoNo }}</td>
             <td class="px-4 py-3 text-xs">{{ user?.address }}</td>

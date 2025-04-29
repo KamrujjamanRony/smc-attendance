@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StudentService } from '../../services/student.service';
 import { ToastService } from '../../components/primeng/toast/toast.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-student-form',
@@ -15,12 +16,15 @@ import { ToastService } from '../../components/primeng/toast/toast.service';
 export class StudentFormComponent {
   private studentService = inject(StudentService);
   private toastService = inject(ToastService);
+  private dataService = inject(DataService);
   private router = inject(Router);
   route = inject(ActivatedRoute);
   id: any = null;
   model?: any;
   paramsSubscription?: Subscription;
   studentSubscription?: Subscription;
+  sessionOption = signal<any[]>([]);
+  batchOption = signal<any[]>([]);
   loading = signal<boolean>(false);
 
   constructor() {
@@ -28,6 +32,7 @@ export class StudentFormComponent {
   }
 
   ngOnInit(): void {
+    this.onLoadOptions();
     this.paramsSubscription = this.route.paramMap.subscribe({
       next: (params) => {
         this.id = params.get('id');
@@ -45,10 +50,17 @@ export class StudentFormComponent {
     });
   }
 
+  onLoadOptions() {
+    this.dataService.getOptions().subscribe((data: any) => {
+      this.sessionOption.set(data.sessionOption);
+      this.batchOption.set(data.batchOption);
+    })
+  }
+
   onFormSubmit(): void {
-    const { name, rollNo } = this.model;
+    const { name, rollNo, sOthers1, sOthers2 } = this.model;
     this.loading.set(true);
-    if (name && rollNo) {
+    if (name && rollNo && sOthers1 && sOthers2) {
 
       if (this.id) {
         this.studentSubscription = this.studentService.updateStudent(this.id, this.model)

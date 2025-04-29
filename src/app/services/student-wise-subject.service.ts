@@ -23,10 +23,13 @@ export class StudentWiseSubjectService {
     return this.apiCall<void>('', 'post', model);
   }
 
-  getStuWiseSub(id: any, search: any): Observable<any> {
+  getStuWiseSub(id: any, search: any, session: any = '', batch: any = ''): Observable<any> {
     return this.apiCall<any>(`/Search`, 'post', {
       "search": search || "",
       "id": id || null,
+      "sOthers1": session === "All" ? "" : session || "",
+      "sOthers2": batch === "All" ? "" : batch || "",
+      "sOthers3": ""
     });
   }
 

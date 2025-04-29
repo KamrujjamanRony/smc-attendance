@@ -17,6 +17,34 @@
       [options]="subjectOption()"
       (selectedChange)="handleSubjectChange($event)"
     ></app-search-select-edit>
+    <select
+      id="session"
+      name="session"
+      [(ngModel)]="session"
+      (ngModelChange)="filterData()"
+      class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
+    >
+      <option value="" class="capitalize">Select session</option>
+      @for(option of sessionOption(); track $index){
+      <option [value]="option" class="capitalize">
+        {{ option }}
+      </option>
+      }
+    </select>
+    <select
+      id="batch"
+      name="batch"
+      [(ngModel)]="batch"
+      (ngModelChange)="filterData()"
+      class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
+    >
+      <option value="" class="capitalize">Select Batch</option>
+      @for(option of batchOption(); track $index){
+      <option [value]="option" class="capitalize">
+        {{ option }}
+      </option>
+      }
+    </select>
 
     <div
       id="date-range-picker"
@@ -31,7 +59,7 @@
           type="date"
           [(ngModel)]="fromDate"
           (ngModelChange)="filterData()"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-950 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
+          class="border text-gray-50 text-sm rounded block w-full ps-10 p-2.5 bg-gray-950 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
           placeholder="Select date"
         />
       </div>
@@ -46,7 +74,7 @@
           type="date"
           [(ngModel)]="toDate"
           (ngModelChange)="filterData()"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-950 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-pointer"
+          class="border text-gray-50 text-sm rounded block w-full ps-10 p-2.5 bg-gray-950 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
           placeholder="Select date"
         />
       </div>
@@ -57,12 +85,12 @@
     >
       Reset
     </button>
-    <!-- <button
-      (click)="exportToPDF()"
+    <button
+      (click)="createPdf()"
       class="px-4 py-3 font-semibold leading-tight text-blue-700 bg-blue-100 hover:text-blue-100 hover:bg-blue-700 rounded inline-block cursor-pointer"
     >
       Export to PDF
-    </button> -->
+    </button>
   </div>
 
   @if (loading()) {
@@ -134,9 +162,6 @@
               </td>
               <!-- <td class="px-4 py-3 text-xs"></td> -->
               <td class="px-4 py-3 text-xs"></td>
-              @if (auth.type === "admin") {
-              <td class="px-4 py-3 text-xs"></td>
-              }
             </tr>
             } }
           </tbody>

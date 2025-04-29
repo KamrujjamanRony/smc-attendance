@@ -3,10 +3,11 @@ import { StudentService } from '../../services/student.service';
 import { CoverComponent } from "../../components/shared/cover/cover.component";
 import { RouterLink } from '@angular/router';
 import { ToastService } from '../../components/primeng/toast/toast.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-student-list',
-  imports: [CoverComponent, RouterLink],
+  imports: [CoverComponent, RouterLink, FormsModule],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.css'
 })
@@ -15,15 +16,21 @@ export class StudentListComponent {
   private toastService = inject(ToastService);
 
   filterStudent = signal<any>([]);
+  search: string = "";
   loading = signal<boolean>(false);
 
   ngOnInit(): void {
+    this.filterData();
+  }
+
+  filterData() {
     this.loading.set(true);
-    this.studentService.getStudent("", "").subscribe(data => {
+    this.studentService.getStudent("", this.search).subscribe(data => {
       this.filterStudent.set(data);
       this.loading.set(false);
     });
   }
+
   onDelete(id: any) {
     if (confirm("Are you sure you want to delete?")) {
       this.studentService.deleteStudent(id).subscribe(data => {

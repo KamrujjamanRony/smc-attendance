@@ -11,6 +11,16 @@
       { "value": "Teacher", "label": "Teacher" },
       { "value": "Stuff", "label": "Stuff" }
     ],
+    "sessionOption": [
+      "All",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "batchOption": ["All", "A", "B", "C", "D", "E", "F"],
     "religionOption": [
       { "value": "Islam", "label": "Islam" },
       { "value": "Christianity", "label": "Christianity" },

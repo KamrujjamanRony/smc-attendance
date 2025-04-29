@@ -20,12 +20,16 @@ export class AttendanceCategoryComponent {
   private loginSubscription?: Subscription;
   semesterOption = signal<any[]>([]);
   subjectOption = signal<any[]>([]);
+  sessionOption = signal<any[]>([]);
+  batchOption = signal<any[]>([]);
   fb = inject(NonNullableFormBuilder);
   isSubmitted = false;
 
   form = this.fb.group({
     year: ['', Validators.required],
     subject: ['', Validators.required],
+    session: ['', Validators.required],
+    batch: ['', Validators.required],
   });
 
   // Simplified method to get form controls
@@ -40,6 +44,8 @@ export class AttendanceCategoryComponent {
   onLoadOptions() {
     this.dataService.getOptions().subscribe((data: any) => {
       this.semesterOption.set(data.semesterOption);
+      this.sessionOption.set(data.sessionOption);
+      this.batchOption.set(data.batchOption);
     })
   }
 
@@ -61,7 +67,7 @@ export class AttendanceCategoryComponent {
     if (this.form.valid) {
       const formData = this.form.value;
       this.isSubmitted = true;
-      this.router.navigateByUrl('/attendance-submit/' + formData.subject);
+      this.router.navigateByUrl('/attendance-submit/' + `${formData.subject}+${formData.session}+${formData.batch}`);
     } else {
       this.toastService.showMessage('warn', 'Warning', 'Form is invalid! Please Fill All Recommended Field!');
     }

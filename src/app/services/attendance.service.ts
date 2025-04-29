@@ -34,14 +34,17 @@ export class AttendanceService {
     });
   }
 
-  getAttendanceDetails(id: any, subjectId: any = null, studentId: any = null, search: any = "", fromDate: any = null, toDate: any = null): Observable<any> {
+  getAttendanceDetails(id: any, subjectId: any = null, studentId: any = null, search: any = "", fromDate: any = null, toDate: any = null, session: any = "", batch: any = ""): Observable<any> {
     return this.apiCall<any>(`/SearchStudentAttendancewithDetail`, 'post', {
       "id": id || null,
-      "subjectId": subjectId || null,
+      "subjectId": subjectId?.toString() || null,
       "studentId": studentId || null,
       "search": search || "",
       "fromDate": fromDate || null,
-      "toDate": toDate || null
+      "toDate": toDate || null,
+      "sOthers1": session === "All" ? "" : session || "",
+      "sOthers2": batch === "All" ? "" : batch || "",
+      "sOthers3": ""
     });
   }
 

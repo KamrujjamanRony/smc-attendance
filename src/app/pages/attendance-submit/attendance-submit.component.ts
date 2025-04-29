@@ -41,13 +41,13 @@ export class AttendanceSubmitComponent {
     this.user = this.authService.getUser();
     this.paramsSubscription = this.route.paramMap.subscribe({
       next: (params) => {
-        this.subjectId = params.get('subjectId');
+        this.subjectId = params.get('subjectId')?.split('+');
         if (this.subjectId) {
-          this.studentWiseSubjectService.getStuWiseSub("", this.subjectId).subscribe(data => {
+          this.studentWiseSubjectService.getStuWiseSub("", this.subjectId[0], this.subjectId[1], this.subjectId[2]).subscribe(data => {
             // Fetch student details for each studentId in the response
             this.fetchStudentDetails(data);
           });
-          this.subjectService.getSubject(this.subjectId, "").subscribe((data: any) => {
+          this.subjectService.getSubject(this.subjectId[0], "").subscribe((data: any) => {
             if (data.length > 0) {
               this.subjectName = data[0].subName;
             }
@@ -114,7 +114,7 @@ export class AttendanceSubmitComponent {
 
   submitAttendance() {
     const attendanceList = this.filterStudent().map(student => ({
-      id: student.id,
+      id: student.studentId,
       name: student.name,
       status: this.attendanceMap().get(student.id) || 0,
     }));
@@ -129,7 +129,7 @@ export class AttendanceSubmitComponent {
       return;
     }
     const requstBody = {
-      subjectId: +this.subjectId,
+      subjectId: +this.subjectId[0],
       date: this.selectedDate,
       postBy: this.user.userName,
       createStudentAttendanceDetailDto: attendanceList.map(item => {
@@ -139,7 +139,7 @@ export class AttendanceSubmitComponent {
         };
       })
     };
-    console.log(requstBody)
+
     if (requstBody) {
       this.loading.set(true);
       this.AttendanceService.addAttendance(requstBody).subscribe({
