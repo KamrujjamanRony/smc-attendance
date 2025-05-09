@@ -27,6 +27,8 @@ export class NavbarComponent {
 
   ngOnInit() {
     this.user = this.authService.getUser();
+    this.menuItems.push({ label: 'Report - Student Wise Attendance', path: `reports/student-wise-attendance` });
+    this.menuItems.push({ label: 'Report - Subject Wise Attendance', path: `reports/subject-wise-attendance` });
     if (this.user && this.user.type === 'admin') {
       this.menuItems.push({ label: 'Admin List', path: `admin-list` });
     }

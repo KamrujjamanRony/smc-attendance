@@ -1,0 +1,172 @@
+<app-cover
+  title="AttendanceDetails list"
+  sub1="Dashboard"
+  sub2="AttendanceDetails"
+></app-cover>
+
+<div class="container mx-auto">
+  <div
+    class="flex flex-wrap items-center justify-center lg:justify-end gap-2 my-2"
+  >
+    <app-search-select-edit
+      [selected]="subjectId"
+      [options]="subjectOption()"
+      (selectedChange)="handleSubjectChange($event)"
+    ></app-search-select-edit>
+    <select
+      id="session"
+      name="session"
+      [(ngModel)]="session"
+      (ngModelChange)="filterData()"
+      class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
+    >
+      <option value="" class="capitalize">Select session</option>
+      @for(option of sessionOption(); track $index){
+      <option [value]="option" class="capitalize">
+        {{ option }}
+      </option>
+      }
+    </select>
+    <select
+      id="batch"
+      name="batch"
+      [(ngModel)]="batch"
+      (ngModelChange)="filterData()"
+      class="border text-gray-50 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 bg-gray-950 border-gray-500 placeholder-gray-400"
+    >
+      <option value="" class="capitalize">Select Batch</option>
+      @for(option of batchOption(); track $index){
+      <option [value]="option" class="capitalize">
+        {{ option }}
+      </option>
+      }
+    </select>
+
+    <div
+      id="date-range-picker"
+      class="flex flex-wrap items-center justify-center gap-2"
+    >
+      <div class="relative max-w-xs">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        ></div>
+        <input
+          id="fromDate"
+          type="date"
+          [(ngModel)]="fromDate"
+          (ngModelChange)="filterData()"
+          class="border text-gray-50 text-sm rounded block w-full ps-10 p-2.5 bg-gray-950 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+          placeholder="Select date"
+        />
+      </div>
+
+      <span class="text-gray-800 font-bold">to</span>
+      <div class="relative max-w-xs">
+        <div
+          class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+        ></div>
+        <input
+          id="toDate"
+          type="date"
+          [(ngModel)]="toDate"
+          (ngModelChange)="filterData()"
+          class="border text-gray-50 text-sm rounded block w-full ps-10 p-2.5 bg-gray-950 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+          placeholder="Select date"
+        />
+      </div>
+    </div>
+    <button
+      (click)="clearFilter()"
+      class="px-4 py-3 font-semibold leading-tight text-red-700 bg-red-100 hover:text-red-100 hover:bg-red-700 rounded inline-block cursor-pointer"
+    >
+      Reset
+    </button>
+    <button
+      (click)="createPdf()"
+      class="px-4 py-3 font-semibold leading-tight text-blue-700 bg-blue-100 hover:text-blue-100 hover:bg-blue-700 rounded inline-block cursor-pointer"
+    >
+      Export to PDF
+    </button>
+  </div>
+
+  @if (loading()) {
+  <div class="flex items-center justify-center h-full text-2xl text-rose-600">
+    Loading...
+  </div>
+  } @else {
+  <div>
+    <div class="container mx-auto overflow-hidden rounded-lg shadow-xs">
+      <div class="w-full overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr
+              class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
+            >
+              <th class="px-4 py-3 hidden">SL</th>
+              <!-- <th class="px-4 py-3">date</th> -->
+              <th class="px-4 py-3">studentName</th>
+              <!-- <th class="px-4 py-3">subjectName</th> -->
+              <th class="px-4 py-3">status</th>
+              <!-- <th class="px-4 py-3">postBy</th> -->
+              @if (auth.type === "admin") {
+              <th class="px-4 py-3 max-w-18 md:max-w-12 min-w-12">Action</th>
+              }
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y">
+            @if (filterAttendanceDetails()) { @for (user of
+            filterAttendanceDetails(); track $index) {
+            <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
+              <td class="px-4 py-3 text-xs hidden">
+                {{ $index + 1 }}
+              </td>
+              <!-- <td class="px-4 py-3 text-xs">
+                {{ user?.date | date : "dd/MM/yyyy" }}
+              </td> -->
+              <td class="px-4 py-3 text-xs">
+                {{ user?.studentName }}
+              </td>
+              <!-- <td class="px-4 py-3 text-xs">{{ user?.subjectName }}</td> -->
+              <td class="px-4 py-3 text-xs">
+                {{
+                  user?.status === 1
+                    ? "Present"
+                    : user?.status === 2
+                    ? "Absent"
+                    : "Leave"
+                }}
+              </td>
+              <!-- <td class="px-4 py-3 text-xs">{{ user?.postBy }}</td> -->
+
+              @if (auth.type === "admin") {
+              <td class="px-4 py-3 text-xs">
+                <a
+                  [routerLink]="['edit', user?.id]"
+                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 hover:text-green-100 hover:bg-green-700 rounded mr-2 inline-block my-2"
+                >
+                  Edit
+                </a>
+              </td>
+              }
+            </tr>
+            } @empty {
+            <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
+              <td class="px-4 py-3 text-xs hidden md:inline-block"></td>
+              <!-- <td class="px-4 py-3 text-xs"></td> -->
+              <td class="px-4 py-3 text-2xl text-rose-500 font-bold">
+                No data found
+              </td>
+              <!-- <td class="px-4 py-3 text-xs"></td> -->
+              <td class="px-4 py-3 text-xs"></td>
+            </tr>
+            } }
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-50 uppercase border-t bg-gray-800 sm:grid-cols-9"
+      ></div>
+    </div>
+  </div>
+  }
+</div>

@@ -23,6 +23,8 @@ import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { teacherGuard } from './guards/teacher.guard';
 import { stuffGuard } from './guards/stuff.guard';
+import { StudentWiseSubjectReportComponent } from './pages/student-wise-subject-report/student-wise-subject-report.component';
+import { SubjectWiseStudentReportComponent } from './pages/subject-wise-student-report/subject-wise-student-report.component';
 
 export const routes: Routes = [
     {
@@ -79,6 +81,16 @@ export const routes: Routes = [
                 path: 'attendance-details/edit/:id',
                 component: AttendanceDetailsFormComponent,
                 canActivate: [adminGuard]
+            },
+            {
+                path: 'reports/student-wise-attendance',
+                component: StudentWiseSubjectReportComponent,
+                canActivate: [authGuard]
+            },
+            {
+                path: 'reports/subject-wise-attendance',
+                component: SubjectWiseStudentReportComponent,
+                canActivate: [authGuard]
             },
             {
                 path: 'meeting',
