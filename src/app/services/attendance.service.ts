@@ -59,4 +59,28 @@ export class AttendanceService {
   deleteAttendance(id: string | number): Observable<any> {
     return this.apiCall<any>(`/DeleteStudentAttendance?id=${id}`, 'delete');
   }
+
+  getSubjectWiseAttendanceReport(studentId: any = null, fromDate: any = null, toDate: any = null, search: any = "", session: any = "", batch: any = ""): Observable<any> {
+    return this.apiCall<any>(`/SubjecttwiseAttendanceReport`, 'post', {
+      "studentId": studentId || null,
+      "search": search || "",
+      "fromDate": fromDate || null,
+      "toDate": toDate || null,
+      "sOthers1": session === "All" ? "" : session || "",
+      "sOthers2": batch === "All" ? "" : batch || "",
+      "sOthers3": ""
+    });
+  }
+
+  getStudentWiseAttendanceReport(subjectId: any = null, fromDate: any = null, toDate: any = null, search: any = "", session: any = "", batch: any = ""): Observable<any> {
+    return this.apiCall<any>(`/StudentwiseAttendanceReport`, 'post', {
+      "subjectId": subjectId || null,
+      "search": search || "",
+      "fromDate": fromDate || null,
+      "toDate": toDate || null,
+      "sOthers1": session === "All" ? "" : session || "",
+      "sOthers2": batch === "All" ? "" : batch || "",
+      "sOthers3": ""
+    });
+  }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "Satkhira Medical College",
+  "address": "Satkhira, Bangladesh",
+  "contact": "017777777777",
+  "tableFontSize": 9,
+  "tableLineHight": 1.5,
+  "sealLeftPos": 0,
+  "sealMiddlePos": 25,
+  "sealRightPos": 45,
+  "marginTop": 5,
+  "marginLeft": 10,
+  "marginRight": 10,
+  "marginBottom": 30
+}

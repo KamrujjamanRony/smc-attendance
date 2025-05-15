@@ -1,18 +1,17 @@
 <app-cover
-  title="AttendanceDetails list"
+  title="Subject Wise Attendance Report"
   sub1="Dashboard"
-  sub2="AttendanceDetails"
+  sub2="Attendance Report"
 ></app-cover>
 
 <div class="container mx-auto">
   <div
     class="flex flex-wrap items-center justify-center lg:justify-end gap-2 my-2"
   >
-    <app-search-select-edit
-      [selected]="subjectId"
-      [options]="subjectOption()"
-      (selectedChange)="handleSubjectChange($event)"
-    ></app-search-select-edit>
+    <app-search-select
+      [options]="studentOption()"
+      (selectedChange)="handleStudentChange($event)"
+    ></app-search-select>
     <select
       id="session"
       name="session"
@@ -102,52 +101,32 @@
             <tr
               class="text-xs font-semibold tracking-wide text-left text-gray-50 uppercase border-b bg-gray-800"
             >
-              <th class="px-4 py-3 hidden">SL</th>
-              <!-- <th class="px-4 py-3">date</th> -->
-              <th class="px-4 py-3">studentName</th>
-              <!-- <th class="px-4 py-3">subjectName</th> -->
-              <th class="px-4 py-3">status</th>
-              <!-- <th class="px-4 py-3">postBy</th> -->
-              @if (auth.type === "admin") {
-              <th class="px-4 py-3 max-w-18 md:max-w-12 min-w-12">Action</th>
-              }
+              <th class="px-4 py-3">subjectName</th>
+              <th class="px-4 py-3 text-center">Present</th>
+              <th class="px-4 py-3 text-center">Absent</th>
+              <th class="px-4 py-3 text-center">Leave</th>
+              <th class="px-4 py-3 text-center">Total Class</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y">
             @if (filterAttendanceDetails()) { @for (user of
             filterAttendanceDetails(); track $index) {
             <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
-              <td class="px-4 py-3 text-xs hidden">
-                {{ $index + 1 }}
-              </td>
-              <!-- <td class="px-4 py-3 text-xs">
-                {{ user?.date | date : "dd/MM/yyyy" }}
-              </td> -->
               <td class="px-4 py-3 text-xs">
-                {{ user?.studentName }}
+                {{ user?.subjectName }}
               </td>
-              <!-- <td class="px-4 py-3 text-xs">{{ user?.subjectName }}</td> -->
-              <td class="px-4 py-3 text-xs">
-                {{
-                  user?.status === 1
-                    ? "Present"
-                    : user?.status === 2
-                    ? "Absent"
-                    : "Leave"
-                }}
+              <td class="px-4 py-3 text-xs text-center">
+                {{ user?.presentCount }}
               </td>
-              <!-- <td class="px-4 py-3 text-xs">{{ user?.postBy }}</td> -->
-
-              @if (auth.type === "admin") {
-              <td class="px-4 py-3 text-xs">
-                <a
-                  [routerLink]="['edit', user?.id]"
-                  class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 hover:text-green-100 hover:bg-green-700 rounded mr-2 inline-block my-2"
-                >
-                  Edit
-                </a>
+              <td class="px-4 py-3 text-xs text-center">
+                {{ user?.absentCount }}
               </td>
-              }
+              <td class="px-4 py-3 text-xs text-center">
+                {{ user?.leaveCount }}
+              </td>
+              <td class="px-4 py-3 text-xs text-center">
+                {{ user?.totalClasses }}
+              </td>
             </tr>
             } @empty {
             <tr class="bg-gray-700 hover:bg-gray-800 text-gray-50">
@@ -156,7 +135,8 @@
               <td class="px-4 py-3 text-2xl text-rose-500 font-bold">
                 No data found
               </td>
-              <!-- <td class="px-4 py-3 text-xs"></td> -->
+              <td class="px-4 py-3 text-xs"></td>
+              <td class="px-4 py-3 text-xs"></td>
               <td class="px-4 py-3 text-xs"></td>
             </tr>
             } }

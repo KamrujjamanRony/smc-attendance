@@ -1,44 +1,45 @@
 import { Component, inject, signal } from '@angular/core';
 import { AttendanceService } from '../../services/attendance.service';
-import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SearchSelectComponent } from "../../components/primeng/search-select/search-select.component";
-import { SubjectService } from '../../services/subject.service';
-import { SearchSelectEditComponent } from "../../components/primeng/search-select/search-select-edit.component";
 import { AuthService } from '../../services/auth.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { DataService } from '../../services/data.service';
 import { CoverComponent } from '../../components/shared/cover/cover.component';
+import { StudentService } from '../../services/student.service';
+import { SearchSelectComponent } from "../../components/primeng/search-select/search-select.component";
 
 @Component({
   selector: 'app-subject-wise-student-report',
-  imports: [CoverComponent, RouterLink, CommonModule, FormsModule, SearchSelectComponent, SearchSelectEditComponent, FormsModule],
+  imports: [CoverComponent, CommonModule, FormsModule, FormsModule, SearchSelectComponent],
   templateUrl: './subject-wise-student-report.component.html',
   styleUrl: './subject-wise-student-report.component.css'
 })
 export class SubjectWiseStudentReportComponent {
   private AttendanceService = inject(AttendanceService);
   private authService = inject(AuthService);
-  private subjectService = inject(SubjectService);
-
+  private studentService = inject(StudentService);
   private dataService = inject(DataService);
 
   filterAttendanceDetails = signal<any>([]);
   loading = signal<boolean>(false);
-  subjectOption = signal<any[]>([]);
+  studentOption = signal<any[]>([]);
   sessionOption = signal<any[]>([]);
   batchOption = signal<any[]>([]);
   today = new Date().toISOString().split('T')[0];
   fromDate: string = this.today;
   toDate: string = this.today;
-  subjectId: any = "";
-  studentId: string = "";
+  studentId: any = null;
   session: string = "";
   batch: string = "";
   search: string = "";
   auth: any = null;
+  header = signal<any>(null);
+  marginTop = signal<any>(0);
+  marginLeft = signal<any>(0);
+  marginRight = signal<any>(0);
+  marginBottom = signal<any>(0);
 
 
   ngOnInit(): void {
@@ -47,25 +48,30 @@ export class SubjectWiseStudentReportComponent {
   }
 
   onLoadOptions() {
+    this.dataService.getHeader().subscribe(data => {
+      this.header.set(data);
+      this.marginTop.set(data?.marginTop);
+      this.marginLeft.set(data?.marginLeft);
+      this.marginRight.set(data?.marginRight);
+      this.marginBottom.set(data?.marginBottom);
+    });
     this.dataService.getOptions().subscribe((data: any) => {
       this.sessionOption.set(data.sessionOption);
       this.batchOption.set(data.batchOption);
       this.session = this.sessionOption()[0];
       this.batch = this.batchOption()[0];
-    });
-    this.subjectService.getSubject("", "").subscribe((data: any) => {
-      if (data.length > 0) {
-        // this.subjectOption.set(data.map((item: any) => ({ id: item.id, label: `${item.subName} (Phase ${item.semester.slice(-1)})` })));
-        this.subjectOption.set(data.map((item: any) => ({ id: item.id, label: item.subName })));
-        this.subjectId = data[0]?.id;
-      }
       this.filterData();
+    });
+    this.studentService.getStudent("", "").subscribe((data: any) => {
+      if (data.length > 0) {
+        this.studentOption.set(data.map((item: any) => ({ id: item.id, label: `${item.rollNo} - ${item.name} - ${item.rgeNo}` })));
+      }
     });
   };
 
   filterData() {
     this.loading.set(true);
-    this.AttendanceService.getAttendanceDetails("", this.subjectId, this.studentId, this.search, this.fromDate, this.toDate, this.session, this.batch).subscribe({
+    this.AttendanceService.getSubjectWiseAttendanceReport(this.studentId, this.fromDate, this.toDate, this.search, this.session, this.batch).subscribe({
       next: (data) => {
         this.filterAttendanceDetails.set([...data]);
         this.loading.set(false);
@@ -77,11 +83,6 @@ export class SubjectWiseStudentReportComponent {
     });
   }
 
-  handleSubjectChange(data: any) {
-    this.subjectId = data;
-    this.filterData();
-  }
-
   handleStudentChange(data: any) {
     this.studentId = data?.id;
     this.filterData();
@@ -91,47 +92,79 @@ export class SubjectWiseStudentReportComponent {
     this.fromDate = this.today;
     this.toDate = this.today;
     this.search = "";
-    this.subjectId = this.subjectOption()[0]?.id;
+    this.studentId = null;
     this.session = this.sessionOption()[0];
     this.batch = this.batchOption()[0];
     this.filterData();
   }
 
-  public createPdf() {
-    // Process data to group by student
-    const studentData = this.processAttendanceData(this.filterAttendanceDetails());
-    const selectSubject = this.subjectOption().find((d: any) => d.id == this.subjectId);
 
-    const doc = new jsPDF('landscape');
+  transform(value: any, args: any = 'dd/MM/yyyy'): any {
+    if (!value) return null;
+    const datePipe = new DatePipe('en-US');
+    return datePipe.transform(value, args);
+  }
+
+  public createPdf() {
+    const doc = new jsPDF({ orientation: 'l', unit: 'mm', format: 'A4' });
+    const centerX = doc.internal.pageSize.getWidth() / 2;
+    const marginLeft = this.marginLeft();
+    const marginRight = this.marginRight();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    let yPos = (this.marginTop() || 0) + 10;
+
+    // Header Section
+    yPos = this.addPageHeader(doc, pageWidth, yPos);
 
     // Title
-    doc.setFontSize(18);
-    doc.text('Monthly Attendance Report - April 2025', 14, 20);
-    doc.setFontSize(12);
-    doc.text(`Subject: ${selectSubject?.label}`, 14, 28);
+    yPos = this.addPageTitle(doc, centerX, yPos);
+
 
     // Prepare data for the table
-    const { tableData, dayHeaders } = this.prepareTableData(studentData);
+    const tableBodyData = this.filterAttendanceDetails().map((item: any) => {
+      return [item.subjectName, item.presentCount, item.absentCount, item.leaveCount, item.totalClasses]
+    });
+
+    const tableHeaders = ['Subject Name', 'Present', 'Absent', 'Leave', 'Total Classes'];
 
     // AutoTable
     autoTable(doc, {
-      head: [['Roll No.', 'Student Name', ...dayHeaders, 'T/P', 'T/A', 'T/L']],
-      body: tableData,
-      startY: 35,
+      head: [tableHeaders],
+      body: tableBodyData,
+      startY: yPos,
       styles: {
-        fontSize: 8,
-        cellPadding: 2
+        fontSize: 10,
+        cellPadding: 2,
+        // lineWidth: 0.1,
+        // lineColor: [0, 0, 0],
+        overflow: 'linebreak',
+        halign: 'center',
+        valign: 'middle',
+        cellWidth: 'wrap',
+        minCellHeight: 10,
+        minCellWidth: 10,
+        font: 'helvetica',
+        fontStyle: 'normal',
+        textColor: [0, 0, 0],
+        fillColor: [255, 255, 255],
       },
       headStyles: {
-        fillColor: [22, 160, 133]
+        fillColor: [22, 160, 133],
+        textColor: [255, 255, 255],
+        fontSize: 12,
       },
       columnStyles: {
-        0: { cellWidth: 20 }, // Roll No.
-        1: { cellWidth: 40 }, // Student Name
-        // Days columns will auto-size
-        [dayHeaders.length + 2]: { cellWidth: 15 }, // Total P
-        [dayHeaders.length + 3]: { cellWidth: 15 }, // Total A
-        [dayHeaders.length + 4]: { cellWidth: 15 }  // Total L
+        0: { cellWidth: 'auto', halign: 'left' }, // Subject Name
+        1: { cellWidth: 20 }, // Present
+        2: { cellWidth: 20 }, // Absent
+        3: { cellWidth: 20 }, // Leave
+        4: { cellWidth: 30 }  // Total Classes
+      },
+      didParseCell: (data) => {
+        if (data.section === 'head' && data.column.index === 0) {
+          data.cell.styles.halign = 'left';
+        }
       }
     });
 
@@ -140,92 +173,65 @@ export class SubjectWiseStudentReportComponent {
     window.open(URL.createObjectURL(pdfOutput));
   }
 
-  private processAttendanceData(data: any[]) {
-    const students: { [key: number]: any } = {};
 
-    data.forEach(record => {
-      if (!students[record.studentId]) {
-        students[record.studentId] = {
-          studentId: record.studentId,
-          rollNo: record.rollNo,
-          studentName: record.studentName || 'Unknown',
-          attendance: {},
-          totals: { P: 0, A: 0, L: 0 }
-        };
-      }
+  // Helper method to add page header
+  public addPageHeader(doc: jsPDF, pageWidth: number, yPos: number): any {
+    // Header Section (on every page)
+    if (this.header()?.name) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text(this.header()?.name, pageWidth / 2, yPos, { align: 'center' });
+      yPos += 5;
 
-      const date = new Date(record.date);
-      const dayNumber = date.getDate(); // Get day of month (1-31)
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text(this.header()?.address, pageWidth / 2, yPos, { align: 'center' });
+      yPos += 5;
 
-      // Only keep the latest record if there are duplicates for the same day
-      if (!students[record.studentId].attendance[dayNumber] ||
-        date > new Date(students[record.studentId].attendance[dayNumber].date)) {
-        students[record.studentId].attendance[dayNumber] = {
-          status: this.getStatusText(record.status),
-          date: record.date
-        };
-      }
-    });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text(`Contact: ${this.header()?.contact}`, pageWidth / 2, yPos, { align: 'center' });
+      yPos += 2;
+      doc.line(0, yPos, 560, yPos);
+      yPos += 7;
 
-    // Calculate totals
-    Object.values(students).forEach((student: any) => {
-      Object.values(student.attendance).forEach((att: any) => {
-        if (att.status === 'P') student.totals.P++;
-        else if (att.status === 'A') student.totals.A++;
-        else if (att.status === 'L') student.totals.L++;
-      });
-    });
-
-    return students;
+      return yPos;
+    }
   }
-
-  private prepareTableData(studentData: any) {
-    const tableData = [];
-    const uniqueDays = this.getUniqueDays(studentData);
-    const dayHeaders = uniqueDays.map(day => day.toString());
-
-    for (const studentId in studentData) {
-      const student = studentData[studentId];
-      const row: any[] = [
-        student.rollNo,
-        student.studentName
-      ];
-
-      // Add attendance for each day
-      uniqueDays.forEach(day => {
-        row.push(student.attendance[day]?.status || '-');
-      });
-
-      // Add totals
-      row.push(student.totals.P);
-      row.push(student.totals.A);
-      row.push(student.totals.L);
-
-      tableData.push(row);
+  // Helper method to add page Title
+  public addPageTitle(doc: jsPDF, centerX: number, yPos: number): any {
+    const selectStudent = this.studentOption().find((d: any) => d.id == this.studentId);
+    // Title Section
+    doc.setFontSize(18);
+    doc.text('Subject Wise Attendance Report', centerX, yPos, { align: 'center' });
+    if (selectStudent) {
+      yPos += 5;
+      doc.setFontSize(12);
+      doc.text(`Student Name: ${selectStudent?.label?.split(" - ")[1]}`, 15, yPos);
+      doc.setFontSize(12);
+      doc.text(`Reg: ${selectStudent?.label?.split(" - ")[2]}`, centerX + 25, yPos);
+      doc.setFontSize(12);
+      doc.text(`Roll: ${selectStudent?.label?.split(" - ")[0]}`, centerX + 100, yPos);
     }
 
-    return { tableData, dayHeaders };
-  }
 
-  private getUniqueDays(studentData: any) {
-    const days = new Set<number>();
+    yPos += 5;
+    doc.setFontSize(12);
+    doc.text(`Session: ${this.session}`, 15, yPos);
+    doc.setFontSize(12);
+    doc.text(`Batch: ${this.batch}`, centerX + 100, yPos);
 
-    for (const studentId in studentData) {
-      for (const day in studentData[studentId].attendance) {
-        days.add(parseInt(day));
-      }
+
+
+    // Date Range
+    doc.setFontSize(12);
+    if (this.fromDate) {
+      const dateRange = `From: ${this.transform(this.fromDate)} to: ${this.toDate ? this.transform(this.toDate) : this.transform(this.fromDate)}`;
+      doc.text(dateRange, centerX, yPos, { align: 'center' });
+      yPos += 5;
     }
 
-    return Array.from(days).sort((a, b) => a - b);
-  }
-
-  private getStatusText(statusCode: number): string {
-    switch (statusCode) {
-      case 1: return 'P';
-      case 2: return 'A';
-      case 3: return 'L';
-      default: return '-';
-    }
+    return yPos;
   }
 
 }

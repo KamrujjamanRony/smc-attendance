@@ -8,6 +8,7 @@ import { map, Observable } from 'rxjs';
 export class DataService {
   private readonly http = inject(HttpClient);
   private readonly jsonUrl = 'data/data.json';
+  private readonly headerUrl = 'data/header.json';
 
   // Fetches the JSON data and extracts the port
   getPort(): Observable<string> {
@@ -15,7 +16,7 @@ export class DataService {
   }
   // Fetches the JSON data and extracts the header
   getHeader(): Observable<any> {
-    return this.http.get<any>(this.jsonUrl).pipe(map(data => data.header));
+    return this.http.get<any>(this.headerUrl);
   }
   // Fetches the JSON data and extracts the options
   getOptions(): Observable<any> {
