@@ -68,7 +68,7 @@ export class StudentWiseSubjectReportComponent {
         // this.subjectOption.set(data.map((item: any) => ({ id: item.id, label: `${item.subName} (Phase ${item.semester.slice(-1)})` })));
         this.subjectOption.set(data.map((item: any) => ({ id: item.id, label: item.subName })));
         this.subjectId = data[0]?.id;
-        console.log(this.subjectId)
+        // console.log(this.subjectId)
         this.filterData();
       }
     });
@@ -154,7 +154,7 @@ export class StudentWiseSubjectReportComponent {
     const tableData = this.filterAttendanceDetails().map((item: any) => {
       return [item.rollNo, item.studentName, item.presentCount, item.absentCount, item.leaveCount, item.totalClasses]
     });
-    console.log(tableData)
+    // console.log(tableData)
 
     // AutoTable
     autoTable(doc, {

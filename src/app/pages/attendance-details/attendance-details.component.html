@@ -111,7 +111,7 @@
               <th class="px-4 py-3">studentName</th>
               <!-- <th class="px-4 py-3">subjectName</th> -->
               <th class="px-4 py-3">status</th>
-              <!-- <th class="px-4 py-3">postBy</th> -->
+              <th class="px-4 py-3">postBy</th>
               @if (auth.type === "admin") {
               <th class="px-4 py-3 max-w-18 md:max-w-12 min-w-12">Action</th>
               }
@@ -140,7 +140,7 @@
                     : "Leave"
                 }}
               </td>
-              <!-- <td class="px-4 py-3 text-xs">{{ user?.postBy }}</td> -->
+              <td class="px-4 py-3 text-xs">{{ user?.postBy }}</td>
 
               @if (auth.type === "admin") {
               <td class="px-4 py-3 text-xs">

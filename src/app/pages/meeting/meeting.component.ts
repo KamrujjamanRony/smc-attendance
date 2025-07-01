@@ -32,7 +32,7 @@ export class MeetingComponent {
   }
 
   filterByDate() {
-    console.log("Filtering by date:", this.fromDate, this.toDate);
+    // console.log("Filtering by date:", this.fromDate, this.toDate);
     this.loadMeetings();
   }
 

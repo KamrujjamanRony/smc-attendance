@@ -122,7 +122,7 @@ export class AttendanceDetailsComponent {
 
     // AutoTable
     autoTable(doc, {
-      head: [['Roll No.', 'Student Name', ...dayHeaders, 'T/P', 'T/A', 'T/L']],
+      head: [['Roll No.', 'Student Name', ...dayHeaders, 'T/P', 'T/A', 'T/L', 'Present %', 'Posted By']],
       body: tableData,
       startY: 35,
       styles: {
@@ -155,6 +155,7 @@ export class AttendanceDetailsComponent {
         students[record.studentId] = {
           studentId: record.studentId,
           rollNo: record.rollNo,
+          postBy: record.postBy,
           studentName: record.studentName || 'Unknown',
           attendance: {},
           totals: { P: 0, A: 0, L: 0 }
@@ -194,19 +195,25 @@ export class AttendanceDetailsComponent {
     for (const studentId in studentData) {
       const student = studentData[studentId];
       const row: any[] = [
-        student.rollNo,
-        student.studentName
+        student?.rollNo,
+        student?.studentName,
       ];
 
       // Add attendance for each day
       uniqueDays.forEach(day => {
-        row.push(student.attendance[day]?.status || '-');
+        row.push(student?.attendance[day]?.status || '-');
       });
 
       // Add totals
-      row.push(student.totals.P);
-      row.push(student.totals.A);
-      row.push(student.totals.L);
+      const present = student?.totals?.P || 0;
+      const absent = student?.totals?.A || 0;
+      const leave = student?.totals?.L || 0;
+      const totalPer = present + absent + leave || 0;
+      row.push(present);
+      row.push(absent);
+      row.push(leave);
+      row.push(totalPer > 0 ? ((present / totalPer) * 100).toFixed(2) + '%' : '0%');
+      row.push(student?.postBy || '');
 
       tableData.push(row);
     }

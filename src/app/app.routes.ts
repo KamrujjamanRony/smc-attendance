@@ -3,7 +3,6 @@ import { MainComponent } from './layouts/main/main.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AttendanceCategoryComponent } from './pages/attendance-category/attendance-category.component';
-import { AttendanceComponent } from './pages/attendance/attendance.component';
 import { StudentFormComponent } from './pages/student-form/student-form.component';
 import { StudentListComponent } from './pages/student-list/student-list.component';
 import { SubjectSelectComponent } from './pages/subject-select/subject-select.component';
@@ -65,11 +64,6 @@ export const routes: Routes = [
             {
                 path: 'attendance-report/:subjectId',
                 component: AttendanceReportComponent,
-                canActivate: [teacherGuard]
-            },
-            {
-                path: 'attendance',
-                component: AttendanceComponent,
                 canActivate: [teacherGuard]
             },
             {
